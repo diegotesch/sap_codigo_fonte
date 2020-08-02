@@ -1,5 +1,3 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +9,9 @@ import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { PageNotificationModule, BreadcrumbModule, MenuModule, ErrorStackModule } from '@nuvem/primeng-components';
 import { SecurityModule, VersionTagModule } from '@nuvem/angular-base';
+
+import { CoreModule } from './core/core.module';
+
 import { DiarioErrosComponent } from './components/diario-erros/diario-erros.component';
 import { PaginaInicialComponent } from './view/pagina-inicial/pagina-inicial.component';
 
@@ -23,8 +24,6 @@ import { PaginaInicialComponent } from './view/pagina-inicial/pagina-inicial.com
         PaginaInicialComponent
     ],
     imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
         AppRoutingModule,
         SharedModule,
         HttpClientModule,
@@ -33,7 +32,8 @@ import { PaginaInicialComponent } from './view/pagina-inicial/pagina-inicial.com
         ErrorStackModule,
         VersionTagModule,
         SecurityModule.forRoot(environment.auth),
-        MenuModule
+        MenuModule,
+        CoreModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy }
