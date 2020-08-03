@@ -8,17 +8,19 @@ import { PRIMENG_IMPORTS } from './primeng-imports';
 @NgModule({
     imports: [
         PRIMENG_IMPORTS,
-    ],
-    providers: [
         CommonModule,
         ReactiveFormsModule,
         RouterModule
+    ],
+    providers: [
+
     ],
     exports: [
         PRIMENG_IMPORTS,
         CommonModule,
         ReactiveFormsModule,
         RouterModule
-    ]
+    ],
+    declarations: []
 })
 export class SharedModule { }

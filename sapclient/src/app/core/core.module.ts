@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDatabase } from './../in-memory-database';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -12,7 +15,9 @@ import { RouterModule } from '@angular/router';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDatabase)
+
   ],
   exports: [
     BrowserModule,
