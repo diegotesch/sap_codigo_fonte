@@ -7,6 +7,9 @@ const routes: Routes = [
     { path: 'diario-erros', component: DiarioErrosComponent, data: { breadcrumb: 'Diário de Erros'} },
     { path: 'login-success', component: LoginSuccessComponent },
     { path: 'lideres', loadChildren: './pages/lideres/lideres.module#LideresModule' },
+    { path: 'os', loadChildren: './pages/os/os.module#OsModule' },
+    { path: 'projetos', loadChildren: './pages/projetos/projetos.module#ProjetosModule' },
+    { path: 'sprints', loadChildren: './pages/sprints/sprints.module#SprintsModule' },
 ];
 
 @NgModule({
