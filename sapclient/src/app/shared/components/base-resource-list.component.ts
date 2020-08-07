@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Component, OnInit, Injector } from '@angular/core';
 
 import { BaseResourceModel } from './../models/base-resource.model';
 import { BaseResourceService } from './../services/base-resource.service';
@@ -7,8 +8,11 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
 
   resources: T[] = [];
 
+
   constructor(
-    private resourceService: BaseResourceService<T>
+    protected resourceService: BaseResourceService<T>,
+    protected confirmService: ConfirmationService,
+    protected messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -17,19 +21,23 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
       resources => {
         this.resources = resources;
       },
-      error => alert('Erro ao carregar a lista')
+      error => this.messageService.add({severity:'error', summary: 'Erro ao carregar a lista Text'})
     );
   }
 
   deletarResource(resource: T) {
-    const deletar = confirm('Tem certeza de que deseja deletar o registro?');
+    this.confirmService.confirm({
+        message: 'Tem certeza de que deseja deletar o registro?',
+        accept: () => {
+            this.deletar(resource.id)
+        }
+    })
+  }
 
-    if (deletar) {
-      this.resourceService.deletar(resource.id).subscribe(
-        () => this.resources = this.resources.filter(res => res.id !== resource.id),
-        () => alert('Erro ao tentar excluir')
-      );
-    }
+  private deletar(id: number) {
+      this.resourceService.deletar(id).subscribe(
+          () => this.resources = this.resources.filter(res => res.id !== id)
+      )
   }
 
 }

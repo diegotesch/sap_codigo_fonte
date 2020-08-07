@@ -1,3 +1,4 @@
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Component } from '@angular/core';
 
 import { Lider } from './../../../models/lider.model';
@@ -19,9 +20,11 @@ export class LideresListComponent extends BaseResourceListComponent<Lider> {
     ];
 
   constructor(
-      private liderService: LiderService
+      protected liderService: LiderService,
+      protected confirmService: ConfirmationService,
+      protected messageService: MessageService
   ) {
-      super(liderService);
+      super(liderService, confirmService, messageService);
   }
 
 }

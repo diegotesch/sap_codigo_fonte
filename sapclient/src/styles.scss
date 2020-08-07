@@ -1,5 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
+body .ui-widget-overlay {
+  background-color: transparent;
+  opacity: 1;
+}
+
 body .ui-table .ui-table-thead>tr>th,
 body .ui-table .ui-table-tfoot>tr>td {
   font-weight: 800 !important;
@@ -10,6 +15,35 @@ body .ui-table .ui-table-tfoot>tr>td {
   border: 1px solid #cacaca !important;
 }
 
+body .ui-message.ui-message-error {
+  background-color: #e62a10;
+  border-color: #e62a10;
+  color: #ffffff;
+  margin: 0.5vh 0;
+}
+
+.ui-message .ui-message-icon,
+.ui-message .ui-message-text {
+  vertical-align: middle;
+  margin: 0 0.5vw;
+}
+
 .action {
   width: 10vw !important;
+}
+
+.float-right {
+  float: right !important;
+}
+
+.text-right {
+  justify-content: flex-end;
+}
+
+button {
+  width: 100%;
+}
+
+button.float-right {
+  margin: 0.5em 1em !important;
 }

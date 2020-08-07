@@ -11,6 +11,7 @@ import { PageNotificationModule, BreadcrumbModule, MenuModule, ErrorStackModule 
 import { SecurityModule, VersionTagModule } from '@nuvem/angular-base';
 
 import { CoreModule } from './core/core.module';
+import { ConfirmationService } from 'primeng/api';
 
 import { DiarioErrosComponent } from './components/diario-erros/diario-erros.component';
 import { PaginaInicialComponent } from './view/pagina-inicial/pagina-inicial.component';
@@ -36,6 +37,7 @@ import { PaginaInicialComponent } from './view/pagina-inicial/pagina-inicial.com
         CoreModule
     ],
     providers: [
+        ConfirmationService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }
     ],
     bootstrap: [AppComponent]

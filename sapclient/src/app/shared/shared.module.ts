@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import {ConfirmationService} from 'primeng/api';
+
 import { PRIMENG_IMPORTS } from './primeng-imports';
+import { FormFieldErrorComponent } from './components/form-field-error/form-field-error.component';
 
 @NgModule({
     imports: [
@@ -13,14 +16,17 @@ import { PRIMENG_IMPORTS } from './primeng-imports';
         RouterModule
     ],
     providers: [
-
+        ConfirmationService
     ],
     exports: [
         PRIMENG_IMPORTS,
         CommonModule,
         ReactiveFormsModule,
-        RouterModule
+        RouterModule,
+
+        // Componentes compartilhados
+        FormFieldErrorComponent
     ],
-    declarations: []
+    declarations: [FormFieldErrorComponent]
 })
 export class SharedModule { }

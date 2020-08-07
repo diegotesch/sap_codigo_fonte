@@ -1,8 +1,14 @@
 <p-card header="Lista de Líderes" styleClass="ui-card-shadow">
+  <p-header>
+    <div class="ui-lg-2 ui-md-3 ui-sm-6 float-right">
+      <button pButton type="button" icon="pi pi-check" iconPos="left" label="Novo" routerLink="novo"></button>
+    </div>
+  </p-header>
+
   <p-table [columns]="colunas" [value]="resources">
     <ng-template tableStyleClass="lista" pTemplate="header" let-columns>
       <tr>
-        <th [class.action]="col.header == 'Ações'" *ngFor="let col of columns">
+        <th [class.action]="col.header=='Ações'" *ngFor="let col of columns">
           {{col.header}}
         </th>
       </tr>
@@ -12,8 +18,8 @@
         <td>{{ recurso.nome }}</td>
         <td>{{ recurso.contato }}</td>
         <td>
-          <button pButton type="button" icon="pi pi-check"></button>
-          <button pButton type="button" icon="pi pi-times"></button>
+          <a [routerLink]="recurso.id" pButton type="button" icon="pi pi-pencil"></a>
+          <a (click)="deletarResource(recurso)" pButton type="button" icon="pi pi-times"></a>
         </td>
       </tr>
     </ng-template>

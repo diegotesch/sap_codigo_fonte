@@ -43,11 +43,14 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
   submitForm() {
     this.submittingForm = true;
-    if (this.acaoAtual == 'novo') {
-      this.cadastrarResource();
-      return;
+    if (!this.resourceForm.invalid) {
+        if (this.acaoAtual == 'novo') {
+            this.cadastrarResource();
+            return;
+          }
+          this.atualizarResource();
     }
-    this.atualizarResource();
+
   }
 
   protected setAcaoAtual() {
