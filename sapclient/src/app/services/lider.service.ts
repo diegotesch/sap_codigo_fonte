@@ -1,8 +1,4 @@
 import { Injectable , Injector} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
 
 import { BaseResourceService } from './../shared/services/base-resource.service';
 import { Lider } from './../models/lider.model';

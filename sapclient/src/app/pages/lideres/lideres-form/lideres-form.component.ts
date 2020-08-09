@@ -32,4 +32,13 @@ export class LideresFormComponent extends BaseResourceFormComponent<Lider> {
       })
   }
 
+  protected obterTituloCadastro(): string {
+    return 'Cadastrar Líder';
+  }
+
+  protected obterTituloEdicao(): string {
+    const nomeLider = this.resource.nome || '';
+    return `Editando líder: ${nomeLider}`;
+  }
+
 }

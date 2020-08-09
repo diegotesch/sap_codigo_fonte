@@ -53,6 +53,15 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
   }
 
+  converterDropDown(jsonData: any, value: string = 'id', label:string = 'nome') {
+      return jsonData.map(data => {
+          return {
+              label: data[label],
+              value: data[value]
+          }
+      })
+  }
+
   protected setAcaoAtual() {
     this.acaoAtual = this.route.snapshot.url[0].path == "novo" ? "novo" : "editar";
   }
