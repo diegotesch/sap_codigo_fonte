@@ -34,6 +34,10 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
     })
   }
 
+  formatarDataBr(data: Date) {
+    return String(data).replace(/(\d{4})-(\d{2})-(\d{2})(.+)/, '$3/$2/$1');
+  }
+
   private deletar(id: number) {
       this.resourceService.deletar(id).subscribe(
           () => this.resources = this.resources.filter(res => res.id !== id)

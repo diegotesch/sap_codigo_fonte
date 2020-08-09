@@ -1,16 +1,15 @@
 import { Injectable, Injector } from '@angular/core';
 
 import { BaseResourceService } from './../shared/services/base-resource.service';
-import { Os } from './../models/os.model';
-
+import { TipoSituacao } from './../models/tipo-situacao.model';
 @Injectable({
   providedIn: 'root'
 })
-export class OsService extends BaseResourceService<Os> {
+export class TipoSituacaoService extends BaseResourceService<TipoSituacao> {
 
   constructor(
       protected injector: Injector
   ) {
-      super('api/os', injector, Os.fromJson);
+      super('api/situacoes', injector, TipoSituacao.fromJson);
   }
 }

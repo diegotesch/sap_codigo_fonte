@@ -24,13 +24,13 @@ export class InMemoryDatabase implements InMemoryDbService {
         { id: 5, nome: 'IBAMA' }
     ];
 
-    const tipoStatus: any[] = [
+    const status: any[] = [
         { id: 1, descricao: 'ativo' },
         { id: 2, descricao: 'inativo' },
         { id: 3, descricao: 'em andamento' },
     ];
 
-    const tipoSituacao: any[] = [
+    const situacoes: any[] = [
         { id: 1, descricao: 'ativo' },
         { id: 2, descricao: 'inativo' },
         { id: 3, descricao: 'em andamento' },
@@ -214,8 +214,8 @@ export class InMemoryDatabase implements InMemoryDbService {
     return {
         lideres,
         clientes,
-        tipoStatus,
-        tipoSituacao,
+        status,
+        situacoes,
         projetos,
         sprints,
         os

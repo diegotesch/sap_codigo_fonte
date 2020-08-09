@@ -1,1 +1,62 @@
-<p>os-form works!</p>
+<p-card [header]="titulo" styleClass="ui-card-shadow">
+  <form [formGroup]='resourceForm'>
+    <div class="ui-fluid p-formgrid p-grid">
+      <div class="ui-g">
+        <div class="ui-lg-8 ui-md-8 ui-sm-12">
+          <label>Nome:</label>
+          <input type="text" pInputText formControlName="nome">
+
+          <app-form-field-error [form-control]="resourceForm.get('nome')"></app-form-field-error>
+        </div>
+
+        <div class="ui-lg-4 ui-md-4 ui-sm-12">
+          <label>Projeto:</label>
+          <p-dropdown [options]="projetos" formControlName="idProjeto" placeholder="Selecione um Projeto"></p-dropdown>
+
+          <app-form-field-error [form-control]="resourceForm.get('idProjeto')"></app-form-field-error>
+        </div>
+      </div>
+
+      <div class="ui-g">
+        <div class="ui-lg-4 ui-md-4 ui-sm-4">
+          <label>Situação:</label>
+          <p-dropdown [options]="situacoes" formControlName="idSituacao" placeholder="Selecione uma Situação"></p-dropdown>
+
+          <app-form-field-error [form-control]="resourceForm.get('idSituacao')"></app-form-field-error>
+        </div>
+
+        <div class="ui-lg-4 ui-md-4 ui-sm-4">
+          <label>Líder:</label>
+          <p-calendar formControlName="dataEntrega" dateFormat="dd/mm/yy" [locale]="dataBr" [showButtonBar]="true"></p-calendar>
+
+          <app-form-field-error [form-control]="resourceForm.get('dataEntrega')"></app-form-field-error>
+        </div>
+
+        <div class="ui-lg-4 ui-md-4 ui-sm-4">
+          <label>Pontos de Função:</label>
+          <input type="text" pInputText formControlName="qtdPontosFuncao" />
+
+          <app-form-field-error [form-control]="resourceForm.get('qtdPontosFuncao')"></app-form-field-error>
+        </div>
+      </div>
+
+      <div class="ui-g">
+        <div class="ui-lg-6 ui-md-6 ui-sm-12">
+          <label>Fábricas:</label>
+          <input type="text" pInputText formControlName="fabricas">
+
+          <app-form-field-error [form-control]="resourceForm.get('fabricas')"></app-form-field-error>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui-g text-right">
+      <div class="ui-lg-2 ui-md-3 ui-sm-6">
+        <button pButton type="button" icon="pi pi-save" iconPos="left" label="Salvar" [disabled]="submittingForm || resourceForm.invalid" (click)="submitForm()"></button>
+      </div>
+      <div class="ui-lg-2 ui-md-3 ui-sm-6">
+        <button pButton type="button" icon="pi pi-times" iconPos="left" label="Cancelar" routerLink="/projetos"></button>
+      </div>
+    </div>
+  </form>
+</p-card>
