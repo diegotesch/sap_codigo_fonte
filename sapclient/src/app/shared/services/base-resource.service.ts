@@ -32,6 +32,12 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     );
   }
 
+  submitSprintGenerico(resource: T): Observable<T> {
+      if (!resource.id)
+        return this.cadastrar(resource);
+      return this.atualizar(resource);
+  }
+
   cadastrar(resource: T): Observable<T> {
     return this.http.post(`${this.apiPath}`, resource).pipe(
       map(this.jsonToResource.bind(this)),

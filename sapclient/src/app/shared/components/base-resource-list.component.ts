@@ -34,8 +34,13 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
     })
   }
 
-  formatarDataBr(data: Date) {
-    return String(data).replace(/(\d{4})-(\d{2})-(\d{2})(.+)/, '$3/$2/$1');
+  formatarDataBr(data: any) {
+    if (data instanceof Date)
+        return String(data).replace(/(\d{4})-(\d{2})-(\d{2})(.+)/, '$3/$2/$1');
+
+    if (data.match(/(\d{4})-(\d{2})-(\d{2})/)) {
+        return data.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3/$2/$1')
+    }
   }
 
   private deletar(id: number) {

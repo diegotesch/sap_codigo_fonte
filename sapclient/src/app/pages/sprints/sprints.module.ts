@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { SharedModule } from './../../shared/shared.module';
 
@@ -12,6 +12,12 @@ import { SprintFormComponent } from './sprint-form/sprint-form.component';
   imports: [
     SprintsRoutingModule,
     SharedModule
+  ],
+  exports: [
+    SprintFormComponent
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class SprintsModule { }

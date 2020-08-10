@@ -6,10 +6,10 @@ export class Os extends BaseResourceModel {
         public nome?: string,
         public idProjeto?: number,
         public idSituacao?: number,
-        public dataProximaEntrega?: Date,
+        public dataProximaEntrega?: any,
         public qtdDefeitosCliente?: number,
         public qtdDefeitosInterno?: number,
-        public dataEntrega?: Date,
+        public dataEntrega?: any,
         public qtdPontosFuncao?: number,
         public fabricas?: string
     ) {

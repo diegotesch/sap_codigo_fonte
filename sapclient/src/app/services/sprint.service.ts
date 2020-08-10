@@ -1,9 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
+
+import { BaseResourceService } from './../shared/services/base-resource.service';
+import { Sprint } from './../models/sprint.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SprintService {
+export class SprintService extends BaseResourceService<Sprint> {
 
-  constructor() { }
+  constructor(
+      protected injector: Injector
+  ) {
+      super('api/sprints', injector, Sprint.fromJson);
+  }
 }

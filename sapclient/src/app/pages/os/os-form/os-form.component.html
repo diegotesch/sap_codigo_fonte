@@ -1,5 +1,6 @@
 <p-card [header]="titulo" styleClass="ui-card-shadow">
   <form [formGroup]='resourceForm'>
+
     <div class="ui-fluid p-formgrid p-grid">
       <div class="ui-g">
         <div class="ui-lg-8 ui-md-8 ui-sm-12">
@@ -26,8 +27,8 @@
         </div>
 
         <div class="ui-lg-4 ui-md-4 ui-sm-4">
-          <label>Líder:</label>
-          <p-calendar formControlName="dataEntrega" dateFormat="dd/mm/yy" [locale]="dataBr" [showButtonBar]="true"></p-calendar>
+          <label>Data de Entrega:</label>
+          <p-calendar [(ngModel)]="resource.dataEntrega" formControlName="dataEntrega" showButtonBar="true" [readonlyInput]="true" [locale]="dataBr" dateFormat="dd/mm/yy" [yearNavigator]="true" [monthNavigator]="true" yearRange="1950:2060"></p-calendar>
 
           <app-form-field-error [form-control]="resourceForm.get('dataEntrega')"></app-form-field-error>
         </div>
@@ -48,15 +49,48 @@
           <app-form-field-error [form-control]="resourceForm.get('fabricas')"></app-form-field-error>
         </div>
       </div>
+
+      <p-fieldset legend="Sprints">
+        <div class="ui g">
+
+          <p-table [columns]="colunas" [value]="sprints">
+            <ng-template tableStyleClass="lista" pTemplate="header" let-columns>
+              <tr>
+                <th [class.action]="col.header=='Ações'" *ngFor="let col of columns">
+                  {{col.header}}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-recurso>
+              <tr>
+                <td>{{ recurso.nome }}</td>
+                <td>{{ recurso.idStatus }}</td>
+                <td>{{ recurso.qtdPontosFuncao }}</td>
+                <td>
+                  <a pButton type="button" icon="pi pi-pencil" (click)="mostrarDialogSprint(recurso.id)"></a>
+                  <a (click)="deletarSprint(recurso)" pButton type="button" icon="pi pi-times"></a>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+          <div class="ui-g text-right">
+            <div class="ui-lg-2 ui-md-3 ui-sm-6">
+              <button pButton type="button" icon="pi pi-plus" iconPos="left" label="Nova Sprint" (click)="mostrarDialogSprint(null)"></button>
+            </div>
+          </div>
+        </div>
+      </p-fieldset>
     </div>
 
     <div class="ui-g text-right">
       <div class="ui-lg-2 ui-md-3 ui-sm-6">
-        <button pButton type="button" icon="pi pi-save" iconPos="left" label="Salvar" [disabled]="submittingForm || resourceForm.invalid" (click)="submitForm()"></button>
+        <button pButton type="button" icon="pi pi-save" iconPos="left" label="Salvar" [disabled]="submittingForm || resourceForm.invalid" (click)="salvarOs()"></button>
       </div>
       <div class="ui-lg-2 ui-md-3 ui-sm-6">
-        <button pButton type="button" icon="pi pi-times" iconPos="left" label="Cancelar" routerLink="/projetos"></button>
+        <button pButton type="button" icon="pi pi-times" iconPos="left" label="Cancelar" routerLink="/os"></button>
       </div>
     </div>
   </form>
 </p-card>
+<app-sprint-form #dialogSprint (aoCadastrarSprint)="modificarSprint($event)"></app-sprint-form>
