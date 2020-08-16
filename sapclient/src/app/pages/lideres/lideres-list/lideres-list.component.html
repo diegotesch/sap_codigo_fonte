@@ -18,8 +18,17 @@
         <td>{{ recurso.nome }}</td>
         <td>{{ recurso.contato }}</td>
         <td>
-          <a [routerLink]="recurso.id" pButton type="button" icon="pi pi-pencil"></a>
+          <a [routerLink]="recurso.id" pButton type="button" icon="ui-icon-create"></a>
           <a (click)="deletarResource(recurso)" pButton type="button" icon="pi pi-times"></a>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length">
+          <div class="text-center">
+            <h3>Nenhum registro cadastrado!</h3>
+          </div>
         </td>
       </tr>
     </ng-template>

@@ -1,3 +1,4 @@
+import { finalize } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -25,7 +26,7 @@ export class ProjetoListComponent extends BaseResourceListComponent<Projeto> imp
 
   constructor(
       protected projetoService: ProjetoService,
-      private clienteService: ClienteService,
+      protected clienteService: ClienteService,
       protected confirmService: ConfirmationService,
       protected messageService: MessageService
   ) {
@@ -38,7 +39,11 @@ export class ProjetoListComponent extends BaseResourceListComponent<Projeto> imp
   }
 
   carregarClientes() {
-    this.clienteService.obterTodos().subscribe(
+      this.blockUI.start();
+    this.clienteService.obterTodos().pipe(
+        finalize(() => this.blockUI.stop())
+    )
+    .subscribe(
         clientes => {
             this.clientes = clientes;
         },
@@ -49,7 +54,7 @@ export class ProjetoListComponent extends BaseResourceListComponent<Projeto> imp
   }
 
   obterNomeCliente(idCliente: number) {
-      return this.clientes.find(cliente => cliente.id === idCliente).nome;
+      return this.clientes.find(cliente => cliente.id === idCliente).descricao;
   }
 
 }

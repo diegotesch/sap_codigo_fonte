@@ -1,6 +1,6 @@
 import { BaseResourceModel } from './../shared/models/base-resource.model';
 
-export class Cliente extends BaseResourceModel {
+export class TipoStatus extends BaseResourceModel {
     constructor(
         public id?: number,
         public descricao?: string
@@ -8,7 +8,7 @@ export class Cliente extends BaseResourceModel {
         super();
     }
 
-    static fromJson(jsonData: any): Cliente {
-        return Object.assign(new Cliente(), jsonData);
+    static fromJson(jsonData: any): TipoStatus {
+        return Object.assign(new TipoStatus(), jsonData);
     }
 }

@@ -77,11 +77,14 @@ export class OsFormComponent extends BaseResourceFormComponent<Os> implements On
   }
 
   salvarOs() {
-    this.sprints.forEach(sprint => {
-        sprint.idOs = this.resource.id;
-        this.sprintService.submitSprintGenerico(sprint)
-        .subscribe(() => console.log('ok'))
-    })
+    // this.sprints.forEach(sprint => {
+    //     sprint.idOrdemServico = this.resource.id;
+    //     this.sprintService.submitSprintGenerico(sprint)
+    //     .subscribe(() => console.log('ok'))
+    // })
+    this.resourceForm.get('sprints').setValue(this.sprints);
+    console.log(this.resource);
+    console.log(this.resourceForm);
     this.submitForm();
   }
 
@@ -91,9 +94,10 @@ export class OsFormComponent extends BaseResourceFormComponent<Os> implements On
         nome: [null, [Validators.required, Validators.minLength(2)]],
         idProjeto: [null, [Validators.required]],
         idSituacao: [null, [Validators.required]],
-        dataEntrega: [null,[Validators.required]],
-        qtdPontosFuncao: [null, [Validators.required]],
-        fabricas: [null]
+        dataProximaEntrega: [null,[Validators.required]],
+        pontosFuncao: [null, [Validators.required]],
+        fabrica: [null],
+        sprints: [null]
     })
   }
 
@@ -147,7 +151,7 @@ export class OsFormComponent extends BaseResourceFormComponent<Os> implements On
   private listaSprints() {
       this.sprintService.obterTodos().subscribe(
           sprints => {
-            this.sprints = sprints.filter(sprint => sprint.idOs == this.resource.id)
+            this.sprints = sprints.filter(sprint => sprint.idOrdemServico == this.resource.id)
           },
           error => this.messageService.add(
             {severity: 'error', summary: 'Erro ao carregar situações'}

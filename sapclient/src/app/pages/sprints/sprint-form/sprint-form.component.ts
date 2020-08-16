@@ -2,6 +2,7 @@ import { Component, Injector, OnInit, Output, EventEmitter } from '@angular/core
 
 import { SelectItem, MessageService } from 'primeng/api';
 import { switchMap, finalize } from 'rxjs/operators';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 import { BaseResourceFormComponent } from './../../../shared/components/base-resource-form.component';
 
@@ -22,6 +23,7 @@ export class SprintFormComponent extends BaseResourceFormComponent<Sprint> imple
     id: number = null;
     sprintForm: FormGroup;
     @Output() aoCadastrarSprint = new EventEmitter();
+    @BlockUI() blockUI: NgBlockUI;
 
   constructor(
       protected sprintService: SprintService,
@@ -59,6 +61,7 @@ export class SprintFormComponent extends BaseResourceFormComponent<Sprint> imple
       this.sprint = new Sprint();
       this.show = false;
       this.id = null;
+      this.submittingForm = false;
       this.iniciarForm();
   }
 
@@ -68,14 +71,18 @@ export class SprintFormComponent extends BaseResourceFormComponent<Sprint> imple
         nome: [null, [Validators.required, Validators.minLength(2)]],
         dataInicio: [null, [Validators.required]],
         dataTermino: [null],
-        qtdPontosFuncao: [null, [Validators.required]]
+        pontosFuncao: [null, [Validators.required]]
     })
   }
 
   protected carregarResource() {
     if (this.id) {
+        this.blockUI.start();
         this.sprintService.obterPorId(this.id).pipe(
-            finalize(() => this.setTitle())
+            finalize(() => {
+                this.setTitle();
+                this.blockUI.stop();
+            })
         )
         .subscribe(resource => {
             this.sprint = resource;

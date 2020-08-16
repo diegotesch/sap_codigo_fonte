@@ -1,6 +1,8 @@
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Component } from '@angular/core';
 
+import { finalize, tap } from 'rxjs/operators';
+
 import { Lider } from './../../../models/lider.model';
 import { LiderService } from './../../../services/lider.service';
 import { BaseResourceListComponent } from './../../../shared/components/base-resource-list.component';

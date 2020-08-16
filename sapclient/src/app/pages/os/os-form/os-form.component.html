@@ -28,25 +28,25 @@
 
         <div class="ui-lg-4 ui-md-4 ui-sm-4">
           <label>Data de Entrega:</label>
-          <p-calendar [(ngModel)]="resource.dataEntrega" formControlName="dataEntrega" showButtonBar="true" [readonlyInput]="true" [locale]="dataBr" dateFormat="dd/mm/yy" [yearNavigator]="true" [monthNavigator]="true" yearRange="1950:2060"></p-calendar>
+          <p-calendar [(ngModel)]="resource.dataProximaEntrega" formControlName="dataProximaEntrega" showButtonBar="true" [readonlyInput]="true" [locale]="dataBr" dateFormat="dd/mm/yy" [yearNavigator]="true" [monthNavigator]="true" yearRange="1950:2060"></p-calendar>
 
-          <app-form-field-error [form-control]="resourceForm.get('dataEntrega')"></app-form-field-error>
+          <app-form-field-error [form-control]="resourceForm.get('dataProximaEntrega')"></app-form-field-error>
         </div>
 
         <div class="ui-lg-4 ui-md-4 ui-sm-4">
           <label>Pontos de Função:</label>
-          <input type="text" pInputText formControlName="qtdPontosFuncao" />
+          <input type="text" pInputText formControlName="pontosFuncao" />
 
-          <app-form-field-error [form-control]="resourceForm.get('qtdPontosFuncao')"></app-form-field-error>
+          <app-form-field-error [form-control]="resourceForm.get('pontosFuncao')"></app-form-field-error>
         </div>
       </div>
 
       <div class="ui-g">
         <div class="ui-lg-6 ui-md-6 ui-sm-12">
           <label>Fábricas:</label>
-          <input type="text" pInputText formControlName="fabricas">
+          <input type="text" pInputText formControlName="fabrica">
 
-          <app-form-field-error [form-control]="resourceForm.get('fabricas')"></app-form-field-error>
+          <app-form-field-error [form-control]="resourceForm.get('fabrica')"></app-form-field-error>
         </div>
       </div>
 
@@ -65,10 +65,19 @@
               <tr>
                 <td>{{ recurso.nome }}</td>
                 <td>{{ recurso.idStatus }}</td>
-                <td>{{ recurso.qtdPontosFuncao }}</td>
+                <td>{{ recurso.pontosFuncao }}</td>
                 <td>
                   <a pButton type="button" icon="pi pi-pencil" (click)="mostrarDialogSprint(recurso.id)"></a>
                   <a (click)="deletarSprint(recurso)" pButton type="button" icon="pi pi-times"></a>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="columns.length">
+                  <div class="text-center">
+                    <h3>Nenhum registro cadastrado!</h3>
+                  </div>
                 </td>
               </tr>
             </ng-template>

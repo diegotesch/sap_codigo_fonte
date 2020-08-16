@@ -4,16 +4,18 @@ export class Sprint extends BaseResourceModel {
     constructor(
         public id?: number,
         public nome?: string,
-        public idOs?: number,
-        public impedimento?: string,
-        public prazo?: number,
+        public idOrdemServico?: number,
+        public impedimento?: boolean,
+        public prazo?: boolean,
         public dataInicio?: any,
         public dataTermino?: any,
         public idStatus?: number,
-        public qtdPontosFuncao?: number
+        public pontosFuncao?: number
     ) {
         super();
         this.idStatus = 2;
+        this.impedimento = false;
+        this.prazo = true;
     }
 
     static fromJson(jsonData: any): Sprint {

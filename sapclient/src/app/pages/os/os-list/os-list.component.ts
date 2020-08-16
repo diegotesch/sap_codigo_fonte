@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
+import { tap, finalize } from 'rxjs/operators';
+
 import { BaseResourceListComponent } from './../../../shared/components/base-resource-list.component';
 import { OsService } from './../../../services/os.service';
 import { ProjetoService } from './../../../services/projeto.service';
@@ -46,7 +48,9 @@ export class OsListComponent extends BaseResourceListComponent<Os> implements On
   }
 
   obterSituacoes() {
-      this.tipoSituacaoService.obterTodos().subscribe(
+      this.tipoSituacaoService.obterTodos().pipe(
+        tap(console.log)
+      ).subscribe(
           situacoes => this.listaSituacoes = situacoes
       );
   }

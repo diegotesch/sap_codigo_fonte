@@ -10,6 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { PageNotificationModule, BreadcrumbModule, MenuModule, ErrorStackModule } from '@nuvem/primeng-components';
 import { SecurityModule, VersionTagModule } from '@nuvem/angular-base';
 
+import { BlockUIModule } from 'ng-block-ui';
+
 import { CoreModule } from './core/core.module';
 import { ConfirmationService } from 'primeng/api';
 
@@ -25,6 +27,9 @@ import { PaginaInicialComponent } from './view/pagina-inicial/pagina-inicial.com
         PaginaInicialComponent
     ],
     imports: [
+        BlockUIModule.forRoot({
+            message: "Carregando..."
+        }),
         AppRoutingModule,
         SharedModule,
         HttpClientModule,

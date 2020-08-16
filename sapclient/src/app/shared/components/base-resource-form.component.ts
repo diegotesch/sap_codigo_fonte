@@ -2,7 +2,9 @@ import { OnInit, AfterContentChecked, Injector } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from  '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { switchMap } from 'rxjs/operators';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
+
+import { switchMap, finalize } from 'rxjs/operators';
 
 import { BaseResourceModel } from './../models/base-resource.model';
 import { BaseResourceService } from './../services/base-resource.service';
@@ -18,6 +20,8 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
   protected route: ActivatedRoute;
   protected router: Router;
   protected formBuilder: FormBuilder;
+
+  @BlockUI() blockUI: NgBlockUI;
 
   dataBr = {
     firstDayOfWeek: 1,
@@ -79,6 +83,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
   protected carregarResource() {
     if (this.acaoAtual == "editar") {
+    this.blockUI.start();
       this.route.paramMap.pipe(
         // obtem o valor do id passado como parametro na rota e o usa para obter a categoria
         switchMap(params => this.resourceService.obterPorId(+params.get("id")))
@@ -86,6 +91,7 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
         this.resource = resource;
         // faz o bind da categoria com o formulario (carrega os dados no formulario)
         this.resourceForm.patchValue(this.resource);
+        this.blockUI.stop();
       }, error => {
         alert('Ocorreu um erro no servidor, tente novamente mais tarde');
       })
@@ -109,8 +115,10 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
   protected cadastrarResource() {
     const resource: T = this.jsonDataToResourceFn(this.resourceForm.value);
-    this.resourceService.cadastrar(resource)
-    .subscribe(
+    this.blockUI.start();
+    this.resourceService.cadastrar(resource).pipe(
+        finalize(() => this.blockUI.stop())
+    ).subscribe(
       resource => this.actionForSuccess(resource),
       error => this.actionForError(error)
     )
@@ -118,8 +126,10 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
 
   protected atualizarResource() {
     const resource: T = this.jsonDataToResourceFn(this.resourceForm.value);
-    this.resourceService.atualizar(resource)
-    .subscribe(
+    this.blockUI.start();
+    this.resourceService.atualizar(resource).pipe(
+        finalize(() => this.blockUI.stop())
+    ).subscribe(
       resource => this.actionForSuccess(resource),
       error => this.actionForError(error)
     )

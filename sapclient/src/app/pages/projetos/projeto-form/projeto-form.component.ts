@@ -1,6 +1,8 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 
+import { finalize, tap } from 'rxjs/operators';
+
 import { SelectItem, MessageService } from 'primeng/api';
 
 import { BaseResourceFormComponent } from './../../../shared/components/base-resource-form.component';
@@ -64,9 +66,12 @@ export class ProjetoFormComponent extends BaseResourceFormComponent<Projeto> imp
   }
 
   private carregarClientes() {
-    this.clienteService.obterTodos().subscribe(
+    this.clienteService.obterTodos().pipe(
+        tap(console.log)
+    )
+    .subscribe(
         clientes => {
-            this.clientes = this.converterDropDown(clientes,  'id', 'nome');
+            this.clientes = this.converterDropDown(clientes,  'id', 'descricao');
         },
         error => this.messageService.add(
             {severity: 'error', summary: 'Erro ao carregar clientes'}

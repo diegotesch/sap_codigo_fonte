@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import {ConfirmationService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 
 import { PRIMENG_IMPORTS } from './primeng-imports';
 import { FormFieldErrorComponent } from './components/form-field-error/form-field-error.component';
@@ -13,10 +13,11 @@ import { FormFieldErrorComponent } from './components/form-field-error/form-fiel
         PRIMENG_IMPORTS,
         CommonModule,
         ReactiveFormsModule,
-        RouterModule
+        RouterModule,
     ],
     providers: [
-        ConfirmationService
+        ConfirmationService,
+        MessageService
     ],
     exports: [
         PRIMENG_IMPORTS,
