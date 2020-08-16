@@ -111,7 +111,9 @@ export class OsFormComponent extends BaseResourceFormComponent<Os> implements On
         this.resource.dataProximaEntrega = new Date(this.resource.dataProximaEntrega);
         this.resourceForm.patchValue(this.resource);
       }, error => {
-        alert('Ocorreu um erro no servidor, tente novamente mais tarde');
+        this.messageService.add(
+            {severity: 'error', summary: 'Ocorreu um erro no servidor, tente novamente mais tarde'}
+        );
       })
     }
   }
