@@ -4,6 +4,7 @@ import { DiarioErrosComponent } from './components/diario-erros/diario-erros.com
 import { LoginSuccessComponent } from '@nuvem/angular-base';
 
 const routes: Routes = [
+    { path: '', loadChildren: './pages/dashboard/dashboard.module#DashboardModule'},
     { path: 'diario-erros', component: DiarioErrosComponent, data: { breadcrumb: 'Diário de Erros'} },
     { path: 'login-success', component: LoginSuccessComponent },
     { path: 'lideres', loadChildren: './pages/lideres/lideres.module#LideresModule' },

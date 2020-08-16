@@ -24,7 +24,7 @@ import { PaginaInicialComponent } from './view/pagina-inicial/pagina-inicial.com
         AppTopbarComponent,
         AppFooterComponent,
         DiarioErrosComponent,
-        PaginaInicialComponent
+        PaginaInicialComponent,
     ],
     imports: [
         BlockUIModule.forRoot({
