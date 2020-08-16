@@ -46,7 +46,7 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
   }
 
   atualizar(resource: T): Observable<T> {
-    return this.http.put(`${this.apiPath}/${resource.id}`, resource).pipe(
+    return this.http.put(`${this.apiPath}`, resource).pipe(
       map(() => resource),
       catchError(this.handleError)
     );

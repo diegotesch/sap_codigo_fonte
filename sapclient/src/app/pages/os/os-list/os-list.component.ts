@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { tap, finalize } from 'rxjs/operators';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 import { BaseResourceListComponent } from './../../../shared/components/base-resource-list.component';
 import { OsService } from './../../../services/os.service';
@@ -19,6 +20,8 @@ import { Os } from './../../../models/os.model';
   styleUrls: ['./os-list.component.css']
 })
 export class OsListComponent extends BaseResourceListComponent<Os> implements OnInit {
+
+    @BlockUI() blockUI: NgBlockUI;
 
     colunas: any[] = [
         { header: 'Nome' },
@@ -48,15 +51,19 @@ export class OsListComponent extends BaseResourceListComponent<Os> implements On
   }
 
   obterSituacoes() {
+      this.blockUI.start();
       this.tipoSituacaoService.obterTodos().pipe(
-        tap(console.log)
+        finalize(() => this.blockUI.stop())
       ).subscribe(
           situacoes => this.listaSituacoes = situacoes
       );
   }
 
   obterProjetos() {
-      this.projetoService.obterTodos().subscribe(
+      this.blockUI.start();
+      this.projetoService.obterTodos().pipe(
+          finalize(() => this.blockUI.stop())
+      ).subscribe(
           projetos => this.listaProjetos = projetos
       );
   }

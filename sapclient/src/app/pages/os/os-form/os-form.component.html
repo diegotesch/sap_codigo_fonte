@@ -1,4 +1,5 @@
 <p-card [header]="titulo" styleClass="ui-card-shadow">
+
   <form [formGroup]='resourceForm'>
 
     <div class="ui-fluid p-formgrid p-grid">
@@ -53,7 +54,7 @@
       <p-fieldset legend="Sprints">
         <div class="ui g">
 
-          <p-table [columns]="colunas" [value]="sprints">
+          <p-table [columns]="colunas" [value]="resource.sprints">
             <ng-template tableStyleClass="lista" pTemplate="header" let-columns>
               <tr>
                 <th [class.action]="col.header=='Ações'" *ngFor="let col of columns">

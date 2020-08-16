@@ -1,3 +1,4 @@
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 
@@ -20,6 +21,8 @@ export class ProjetoFormComponent extends BaseResourceFormComponent<Projeto> imp
 
     clientes: SelectItem[] = [];
     lideres: SelectItem[] = [];
+
+    @BlockUI() blockUI: NgBlockUI;
 
   constructor(
       private clienteService: ClienteService,
@@ -66,8 +69,9 @@ export class ProjetoFormComponent extends BaseResourceFormComponent<Projeto> imp
   }
 
   private carregarClientes() {
+      this.blockUI.start();
     this.clienteService.obterTodos().pipe(
-        tap(console.log)
+        finalize(() => this.blockUI.stop())
     )
     .subscribe(
         clientes => {
@@ -80,7 +84,10 @@ export class ProjetoFormComponent extends BaseResourceFormComponent<Projeto> imp
   }
 
   private carregarLideres() {
-    this.liderService.obterTodos().subscribe(
+      this.blockUI.start();
+    this.liderService.obterTodos().pipe(
+        finalize(() => this.blockUI.stop())
+    ).subscribe(
         lideres => {
             this.lideres = this.converterDropDown(lideres, 'id', 'nome');
         },

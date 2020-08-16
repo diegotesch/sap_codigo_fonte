@@ -27,6 +27,7 @@ export class SprintFormComponent extends BaseResourceFormComponent<Sprint> imple
 
   constructor(
       protected sprintService: SprintService,
+      protected messageService: MessageService,
       private osService: OsService,
       protected injector: Injector
   ) {
@@ -91,7 +92,9 @@ export class SprintFormComponent extends BaseResourceFormComponent<Sprint> imple
 
             this.sprintForm.patchValue(this.sprint);
           }, error => {
-            alert('Ocorreu um erro no servidor, tente novamente mais tarde');
+            this.messageService.add(
+                {severity: 'error', summary: 'Ocorreu um erro no servidor, tente novamente mais tarde'}
+            );
           })
     }
   }

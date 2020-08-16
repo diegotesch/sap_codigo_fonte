@@ -27,8 +27,7 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
   listarResources() {
     this.blockUI.start()
     this.resourceService.obterTodos().pipe(
-        finalize(() => this.blockUI.stop()),
-        tap(console.log)
+        finalize(() => this.blockUI.stop())
     )
     .subscribe(
       resources => {

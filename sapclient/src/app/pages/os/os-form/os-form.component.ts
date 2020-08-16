@@ -25,7 +25,6 @@ export class OsFormComponent extends BaseResourceFormComponent<Os> implements On
 
     projetos: SelectItem[] = [];
     situacoes: SelectItem[] = [];
-    sprints: Sprint[] = [];
     @ViewChild('dialogSprint') dialogSprint: SprintFormComponent;
 
     colunas: any = [
@@ -63,28 +62,20 @@ export class OsFormComponent extends BaseResourceFormComponent<Os> implements On
 
   deletarSprint(sprint: Sprint) {
       this.sprintService.deletar(sprint.id).subscribe(
-          () => this.sprints = this.sprints.filter(res => res.id !== sprint.id)
+          () => this.resource.sprints = this.resource.sprints.filter(res => res.id !== sprint.id)
       )
   }
 
   modificarSprint(event) {
       if (!event.id) {
-          this.sprints.push(event);
+            this.resource.sprints.push(event);
           return;
       }
-      console.log(event);
-      this.sprints = this.sprints.filter(sprint => sprint.id != event.id).concat(event);
+      this.resource.sprints = this.resource.sprints.filter(sprint => sprint.id != event.id).concat(event);
   }
 
   salvarOs() {
-    // this.sprints.forEach(sprint => {
-    //     sprint.idOrdemServico = this.resource.id;
-    //     this.sprintService.submitSprintGenerico(sprint)
-    //     .subscribe(() => console.log('ok'))
-    // })
-    this.resourceForm.get('sprints').setValue(this.sprints);
-    console.log(this.resource);
-    console.log(this.resourceForm);
+    this.resourceForm.get('sprints').setValue(this.resource.sprints);
     this.submitForm();
   }
 
@@ -118,7 +109,6 @@ export class OsFormComponent extends BaseResourceFormComponent<Os> implements On
         this.resource = resource;
         this.resource.dataEntrega = new Date(this.resource.dataEntrega);
         this.resource.dataProximaEntrega = new Date(this.resource.dataProximaEntrega);
-        this.listaSprints();
         this.resourceForm.patchValue(this.resource);
       }, error => {
         alert('Ocorreu um erro no servidor, tente novamente mais tarde');
@@ -146,16 +136,5 @@ export class OsFormComponent extends BaseResourceFormComponent<Os> implements On
             {severity: 'error', summary: 'Erro ao carregar situações'}
         )
     );
-  }
-
-  private listaSprints() {
-      this.sprintService.obterTodos().subscribe(
-          sprints => {
-            this.sprints = sprints.filter(sprint => sprint.idOrdemServico == this.resource.id)
-          },
-          error => this.messageService.add(
-            {severity: 'error', summary: 'Erro ao carregar situações'}
-        )
-      );
   }
 }
