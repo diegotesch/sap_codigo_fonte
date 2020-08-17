@@ -1,4 +1,6 @@
 export enum SituacaoEnum {
-    ATIVA = 1,
-    INATIVA = 0
+    'EM CODIFICAÇÃO' = 1,
+    'EM_A/P' = 2,
+    'FINALIZADA' = 3,
+    'AGUARDANDO' = 4
 }

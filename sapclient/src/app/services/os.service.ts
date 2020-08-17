@@ -16,4 +16,5 @@ export class OsService extends BaseResourceService<Os> {
   ) {
       super(api, injector, Os.fromJson);
   }
+
 }

@@ -14,6 +14,7 @@ export class Os extends BaseResourceModel {
         public qtdDefeitosInterno?: number,
         public dataEntrega?: any,
         public qtdPontosFuncao?: number,
+        public pontosFuncao?: number,
         public fabrica?: string
     ) {
         super();
