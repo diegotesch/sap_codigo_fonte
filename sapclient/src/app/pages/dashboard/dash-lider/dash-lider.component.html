@@ -1,56 +1,55 @@
 <p-card header="DASHBOARD" styleClass="ui-card-shadow">
-  <p-header>
-    <!-- <div class="ui-lg-2 ui-md-3 ui-sm-6 float-right">
+  <!-- <p-header>
+    <div class="ui-lg-2 ui-md-3 ui-sm-6 float-right">
       <button pButton type="button" icon="pi pi-check" iconPos="left" label="Novo" routerLink="novo"></button>
-    </div> -->
-  </p-header>
+    </div>
+  </p-header> -->
 
   <ng-container *ngIf="lista$ | async as lista; else loading">
-    <pre>{{ lista | json }}</pre>
-    <p-table [columns]="colunas" [value]="lista">
+    <p-table [columns]="colunas" [value]="lista" [responsive]="true">
       <ng-template tableStyleClass="lista" pTemplate="header" let-columns>
         <tr>
-          <th [class.action]="col.header=='Ações'" *ngFor="let col of columns">
+          <th [class.actiondash]="col.header=='Ações'" *ngFor="let col of columns">
             {{col.header}}
           </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-rowData>
+      <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
         <tr>
-          <!-- <td>{{ rowData.cliente.descricao }} - {{ rowData.projeto.nome }}</td>
-          <td>{{ rowData.os[0].idSituacao }}</td>
-          <td>{{ rowData.os[0].sprints[0].idStatus }}</td>
-          <td>{{ selecionarOsAndamento(rowData.projeto.id).nome}}</td>
-          <td>{{ selecionarOsAndamento(rowData.projeto.id).pontosFuncao }}</td>
-          <td>{{ selecionarOsAndamento(rowData.projeto.id).dataProximaEntrega }}</td>
-          <td>{{ selecionarOsAndamento(rowData.projeto.id).sprints[0].prazo }}</td>
-          <td>{{ selecionarOsAndamento(rowData.projeto.id).qtdDefeitosCliente > 0 ? 'SIM' : 'NÃO' }}</td>
-          <td>{{ selecionarOsAndamento(rowData.projeto.id).qtdDefeitosInterno || 0 }}</td>
-          <td>{{ selecionarOsAndamento(rowData.projeto.id).sprints[0].impedimento }}</td>
+          <td *ngIf="rowData.rowspan" [rowSpan]="rowData.rowspan.size">
+            <a [routerLink]="['/projetos', rowData.projeto.id]">
+                {{rowData.cliente}} - {{rowData.projeto.nome}}
+            </a>
+          </td>
+
           <td>
+            <a target="_blank" href="https://sgo.basis.com.br/browse/{{ rowData.nome }}">
+                {{ rowData.nome }}
+            </a>
+          </td>
+          <td>{{ rowData.situacao }}</td>
+          <td pEditableColumn>
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <input pInputText type="text" [(ngModel)]="rowData.projeto.revisor">
+                <input pInputText type="text" [(ngModel)]="rowData.pontosFuncao">
               </ng-template>
               <ng-template pTemplate="output">
-                {{rowData.projeto.revisor}}
+                {{ rowData.pontosFuncao }}
               </ng-template>
             </p-cellEditor>
           </td>
-
+          <td>{{ formatarData(rowData.dataProximaEntrega) }}</td>
+          <td>{{ checarPrazo(rowData) }}</td>
+          <td>{{ rowData.qtdDefeitosCliente || 0 }}</td>
+          <td>{{ rowData.qtdDefeitosInterno || 0 }}</td>
+          <td>{{ checarImpedimento(rowData) }}</td>
+          <td>{{ rowData.projeto.revisor }}</td>
           <td>{{ rowData.projeto.gerente }}</td>
-          <td>{{ rowData.projeto.testador }}</td> -->
+          <td>{{ rowData.projeto.testador }}</td>
+          <td>
+            <a [routerLink]="['/os', rowData.id]" pButton icon="ui-icon-create"></a>
+          </td>
 
-          <!-- <td pEditableColumn>
-              <p-cellEditor>
-                <ng-template pTemplate="input">
-                  <input pInputText type="text" [(ngModel)]="rowData.impedimento">
-                </ng-template>
-                <ng-template pTemplate="output">
-                  {{rowData.impedimento}}
-                </ng-template>
-              </p-cellEditor>
-            </td> -->
         </tr>
       </ng-template>
     </p-table>
@@ -58,10 +57,10 @@
 
 
   <ng-template #loading>
-    <div class="ui-g-12 loading">
-      <div class="ui-g-2 ui-g-offset-5">
-        <p><i class="pi pi-spin pi-spinner" style="font-size: 3em"></i></p>
-        <p>Carregando Questões...</p>
+    <div class="ui-g-12 loading ">
+      <div class="ui-g-2 ui-g-offset-5 ">
+        <p><i class="pi pi-spin pi-spinner " style="font-size: 3em "></i></p>
+        <p>Preprando Dashboard...</p>
       </div>
     </div>
   </ng-template>

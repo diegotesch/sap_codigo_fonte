@@ -3,7 +3,7 @@ import { Component, OnInit, AfterContentChecked } from '@angular/core';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { tap, finalize, map } from 'rxjs/operators';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
@@ -20,6 +20,8 @@ import { Projeto } from './../../../models/projeto.model';
 import { Os } from './../../../models/os.model';
 import { Lider } from './../../../models/lider.model';
 import { Cliente } from './../../../models/cliente.model';
+import { ListaEnum } from './../../../models/enums/lista.enum.model';
+
 
 @Component({
   selector: 'app-dash-lider',
@@ -30,30 +32,38 @@ export class DashLiderComponent implements OnInit, AfterContentChecked {
 
     @BlockUI() blockUI: NgBlockUI;
 
+    listaLideres$: Observable<Lider[]>;
     listaLideres: Lider[] = [];
+    listaOs$: Observable<Os[]>;
     listaOs: Os[] = [];
+    listaProjetos$: Observable<Projeto[]>;
     listaProjetos: Projeto[] = [];
+    listaClientes$: Observable<Cliente[]>;
     listaClientes: Cliente[] = [];
+    status$: Observable<TipoStatus[]>;
     status: TipoStatus[] = [];
+    situacoes$: Observable<TipoSituacao[]>;
     situacoes: TipoSituacao[] = [];
     lista$: Observable<any>;
     lista: any = [];
+    listaAgrupada: any;
     osSelecionada: number = null;
+    listaEnum = ListaEnum;
 
     colunas: any[] = [
         { header: '' },
+        { header: 'OS' },
         { header: 'Status da OS' },
-        { header: 'Status da Sprint' },
-        { header: 'Qtde de OS em execução?'},
-        { header: 'PF em execução?'},
+        { header: 'PF em execução?', reduzir: true},
         { header: 'Próxima Entrega?'},
         { header: 'A OS/Sprint está no prazo?'},
-        { header: 'Defeito de Cliente?'},
-        { header: 'Defeitos Internos?'},
+        { header: 'Defeito de Cliente?', reduzir: true},
+        { header: 'Defeitos Internos?', reduzir: true},
         { header: 'Impedimento?'},
         { header: 'Revisor de Código?'},
         { header: 'Gerente?'},
         { header: 'Testador?'},
+        { header: 'Ações'},
     ];
 
   constructor(
@@ -66,41 +76,58 @@ export class DashLiderComponent implements OnInit, AfterContentChecked {
   ) { }
 
   ngOnInit(): void {
-      this.obterLideres();
-      this.obterOrdensServico();
-      this.obterClientes();
-      this.obterSituacoes();
-      this.obterStatus();
+      this.obterLitaCompleta();
   }
 
   ngAfterContentChecked() {
-    // this.obterProjetos();
-    // this.listar();
   }
 
-//   listar() {
-//       this.blockUI.start();
-//       this.projetosService.obterDetalhado().pipe(
-//           finalize(() => this.blockUI.stop()),
-//           tap(console.log)
-//       ).subscribe(projetos => this.lista = projetos);
-//   }
+  obterLitaCompleta() {
+    this.blockUI.start();
 
-  montarLista() {
-      this.blockUI.start();
-      this.lista = this.listaProjetos.map(projeto => {
+    this.lista$ = forkJoin([
+        this.osService.obterTodos(),
+        this.projetosService.obterTodos(),
+        this.clienteService.obterTodos(),
+        this.situacaoService.obterTodos(),
+        this.statusService.obterTodos(),
+        this.liderService.obterTodos(),
+    ]).pipe(
+        // tap(console.log),
+        map(this.montarListagem),
+        finalize(() => this.blockUI.stop())
+    );
+  }
 
-        //   let projeto =this.filtrarProjetoPorId(os.idProjeto);
-          let cliente = this.filtrarClientePorId(projeto.idCliente);
-          let os = this.filtrarOsPorProjeto(projeto.id);
-          return {
-              projeto,
-              cliente,
-              os,
-              selecionada: null
-          }
-      })
-    this.blockUI.stop();
+  montarListagem(array) {
+    let retorno = [];
+    retorno = array[ListaEnum.OS].map((item, index, full) => {
+        item['projeto'] = array[ListaEnum.PROJETO].find(projeto => projeto.id === item.idProjeto);
+        item['cliente'] = array[ListaEnum.CLIENTE].find(cliente => cliente.id === item.projeto.idCliente).descricao;
+        item['situacao'] = array[ListaEnum.SITUACAO].find(situacao => situacao.id === item.idSituacao).descricao
+
+        if (!full[index-1] || full[index-1].idProjeto !== item.idProjeto) {
+            item['rowspan'] = { indice: index, size: array[ListaEnum.OS].filter(os => os.idProjeto === item.idProjeto).length };
+        }
+        return item
+    });
+    return retorno;
+  }
+
+  checarPrazo(os) {
+    return os.sprints.some(sprint => !sprint.prazo) ? 'NÃO' : 'SIM';
+  }
+
+  checarImpedimento(os) {
+      return os.sprints.some(sprint => !sprint.impedimento) ? 'NÃO' : 'SIM';
+  }
+
+  getRowspan(indice, data, array, check = false) {
+    const info = this.filtrarOsPorProjeto(data.id, array)
+      if (check)
+        return info.length > 1 ? true : false;
+
+      return this.filtrarOsPorProjeto(data.id, array).length;
   }
 
   selecionarOsAndamento(idProjeto: number) {
@@ -111,15 +138,12 @@ export class DashLiderComponent implements OnInit, AfterContentChecked {
       return this.listaProjetos.find(projeto => projeto.id == idProjeto);
   }
 
-  filtrarClientePorId(idCliente: number): Cliente {
-      return this.listaClientes.find(cliente => cliente.id == idCliente);
+  filtrarClientePorId(idCliente: number, clientes: Cliente[]): Cliente {
+      return clientes.find(cliente => cliente.id == idCliente);
   }
 
-  filtrarOsPorProjeto(idProjeto: number) {
-      return this.listaOs.filter(os => os.idProjeto == idProjeto);
-    //   return retorno.map(os => {
-    //       return { label: os.nome, value: os }
-    //   })
+  filtrarOsPorProjeto(idProjeto: number, array) {
+      return array.filter(os => os.idProjeto == idProjeto);
   }
 
   filtrarStatus(idStatus: number) {
@@ -129,75 +153,6 @@ export class DashLiderComponent implements OnInit, AfterContentChecked {
   filtrarSituacao(idSituacao: number) {
     return this.situacoes.find(situacao => situacao.id == idSituacao).descricao;
 }
-
-  filtrarOsAndamento(ordens) {
-      let oss = ordens.filter(os => os.idSituacao !== SituacaoEnum.FINALIZADA && os.idSituacao !== SituacaoEnum.AGUARDANDO);
-      if (!oss) {
-          return '-'
-      }
-      return oss.reduce((acc, item, index, array) => {
-        if (index == 0)
-            acc = `${array.length} (`;
-        acc += `${item.nome}`
-        acc += index == (array.length -1) ? ')' : ' e ';
-        return acc;
-      }, '')
-  }
-
-  // ORDEM DE SERVICO POR LIDER
-  obterLideres() {
-      this.blockUI.start();
-      this.liderService.obterTodos().pipe(
-          finalize(() => this.blockUI.stop())
-      ).subscribe(
-          lideres => this.listaLideres = lideres
-      );
-  }
-
-  obterOrdensServico() {
-      this.blockUI.start();
-      this.osService.obterTodos().pipe(
-          finalize(() => this.blockUI.stop())
-      ).subscribe(os => this.listaOs = os);
-  }
-
-  obterProjetos() {
-    this.blockUI.start();
-    this.lista$ = this.projetosService.obterTodos().pipe(
-        finalize(() => this.blockUI.stop()),
-        tap(console.log),
-        map(projeto => {
-            projeto.forEach(i => {
-                i['os'] = this.filtrarOsPorProjeto(i.id);
-                i['cliente'] = this.filtrarClientePorId(i.idCliente);
-            })
-            return projeto;
-        })
-    );
-    // .subscribe(projetos => this.listaProjetos = projetos);
-  }
-
-  obterClientes() {
-      this.blockUI.start();
-      this.clienteService.obterTodos().pipe(
-          finalize(() => this.blockUI.stop())
-      ).subscribe(clientes => this.listaClientes = clientes);
-  }
-
-  obterSituacoes() {
-    this.blockUI.start();
-    this.situacaoService.obterTodos().pipe(
-        finalize(() => this.blockUI.stop())
-    ).subscribe(situacoes => this.situacoes = situacoes);
-  }
-
-  obterStatus() {
-    this.blockUI.start();
-    this.statusService.obterTodos().pipe(
-        finalize(() => this.blockUI.stop())
-    ).subscribe(status => this.status = status);
-  }
-
 
   private converterDropDown(jsonData: any, label:string = 'nome', value: string = null) {
 
@@ -211,5 +166,10 @@ export class DashLiderComponent implements OnInit, AfterContentChecked {
             value: valor
         }
     })
+    }
+
+    formatarData(data) {
+        let nova = data.split('-');
+        return `${nova[2]}/${nova[1]}/${nova[0]}`;
     }
 }
