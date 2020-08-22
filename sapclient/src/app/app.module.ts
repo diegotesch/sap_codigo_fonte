@@ -13,7 +13,7 @@ import { SecurityModule, VersionTagModule } from '@nuvem/angular-base';
 import { BlockUIModule } from 'ng-block-ui';
 
 import { CoreModule } from './core/core.module';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { DiarioErrosComponent } from './components/diario-erros/diario-erros.component';
 import { PaginaInicialComponent } from './view/pagina-inicial/pagina-inicial.component';
@@ -43,6 +43,7 @@ import { PaginaInicialComponent } from './view/pagina-inicial/pagina-inicial.com
     ],
     providers: [
         ConfirmationService,
+        MessageService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }
     ],
     bootstrap: [AppComponent]

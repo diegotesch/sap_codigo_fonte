@@ -57,3 +57,41 @@ button {
 button.float-right {
   margin: 0.5em 1em !important;
 }
+
+.ui-dropdown {
+  width: 100% !important;
+  min-width: auto !important;
+}
+
+.calendarTable input {
+  background-image: none !important;
+  width: 100% !important;
+}
+
+.editableIcon {
+  width: 1.5em !important;
+  height: 2em !important;
+  margin: 0 0 0 -5px;
+}
+
+.dashboardFiltro label {
+  display: block !important;
+}
+
+.dashboardFiltro input,
+.filtro div.ui-multiselect {
+  width: 100% !important;
+}
+
+body .ui-paginator .ui-dropdown {
+  width: 50px !important;
+}
+
+.layout-container .topbar .logo {
+  display: inline-block;
+  vertical-align: middle;
+  width: 200px;
+  height: 50px;
+  background: url('assets/layout/images/basis.jpg') top left no-repeat;
+  background-size: 150px 50px;
+}
